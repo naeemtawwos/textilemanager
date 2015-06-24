@@ -1,0 +1,63 @@
+body {
+
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+
+.form-center {
+  max-width: 335px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-center .form-center-heading,
+.form-center .checkbox {
+  margin-bottom: 10px;
+}
+.form-center .checkbox {
+  font-weight: normal;
+}
+.form-center .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.form-center .form-control:focus {
+  z-index: 2;
+}
+.form-center input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-center input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
+
+
+
+/* MARKETING CONTENT
+-------------------------------------------------- */
+
+/* Center align the text within the three columns below the carousel */
+.marketing .col-lg-4 {
+  margin-bottom: 20px;
+  margin-top: 80px;
+  text-align: center;
+}
+.marketing h2 {
+  font-weight: normal;
+}
+.marketing .col-lg-4 p {
+  margin-right: 10px;
+  margin-left: 10px;
+}
