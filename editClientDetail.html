@@ -8,7 +8,7 @@
     <meta name="author" content="Naeem">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Enter New Lot</title>
+    <title>Edit client credentiials</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -19,6 +19,8 @@
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
 
+<script src="js/jquery.js"></script>
+    
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -53,45 +55,61 @@
 
 
         <form class="form-center">
-          <h2 class="form-signin-heading">Enter the details of Lot</h2>
-          <label for="yarnCat" class="sr-only"></label>
-          <input type="text" id="yarnCat" class="form-control" placeholder="Yarn Category" required autofocus>
-           COMMENT:Show a popover in the right with the address of the client with ajax call
-           
-           <select class="form-control" id="company" name="company" placeholder="Company" required data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">
-             <option value=""></option>
+          <h2 class="form-signin-heading">Select client to edit</h2>
+          <label for="company" class="sr-only">Client Name</label>
+          <select class="form-control" id="company" name="company" placeholder="Select Client to Edit" required onchange="fetchCompanyCredentials();">
+            <option value=""></option>
             <option value="marwa_fabrics">Marwa Fabrics</option>
             <option value="safa_fabrics">Safa Fabrics</option>
             <option value="fasil_fabrics">Fasil Fabrics</option>
             <option value="classic_polo">Classic_Polo</option>
           </select>
-          <label for="quantity" class="sr-only">Quantity Purchased</label>
-          <input type="text" id="quantity" class="form-control" placeholder="Quantity Purchased" required >
-          <label for="price" class="sr-only">Total Price Amount</label>
-          <input type="text" id="price" class="form-control" placeholder="Total Price Amount" required >
-          <label for="purchaseDate" class="sr-only">Purchase Date</label>
-          <input type="date" data-provide="datepicker" id="purchaseDate" class="form-control" placeholder="Purchased Date" required >
-          <label for="invoiceNumber" class="sr-only">Invoice Number</label>
-          <input type="text" id="invoiceNumber" class="form-control" placeholder="Invoice Number" required >
-          <label for="invoiceDate" class="sr-only">Invoice Date</label>
-          <input type="date" id="invoiceDate" data-provide="datepicker" class="form-control" placeholder="Invoice Date" required >
-
-
+          <div style="display:none" id="companyCred">
+            <input type="text" id="custName" class="form-control" placeholder="Customer Name" required autofocus>
+            <label for="address" class="sr-only">Address</label>
+            <textarea id="address" class="form-control" placeholder="Address..." ></textarea>
+            <label for="city" class="sr-only">City</label>
+            <input type="text" id="city" class="form-control" placeholder="City" required>
+            <label for="state" class="sr-only">State</label>
+            <input type="text" id="state" class="form-control" placeholder="State" required>
+            <label for="mobile" class="sr-only">Mobile</label>
+            <input type="text" id="mobile" class="form-control" placeholder="Mobile" required>
+            <label for="phone" class="sr-only">Phone</label>
+            <input type="text" id="phone" class="form-control" placeholder="Phone">
+            <label for="phoneAlt" class="sr-only">Alternative Phone</label>
+            <input type="text" id="phoneAlt" class="form-control" placeholder="Alternative Phone">            
+            <label for="fax" class="sr-only">Fax</label>
+            <input type="text" id="fax" class="form-control" placeholder="Fax">
+            <label for="email" class="sr-only">E-mail</label>
+            <input type="input" id="email" class="form-control" placeholder="E-mail">
+            <label for="emailAlt" class="sr-only">Alternative E-mail</label>
+            <input type="input" id="emailAlt" class="form-control" placeholder="Alternative E-mail">
             <!--div class="checkbox">
             <label>
             <input type="checkbox" value="remember-me"> Remember me
             </label>
             </div-->
-          <button class="btn btn-lg btn-primary btn-block" type="submit">Add New Lot</button>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Save Client</button>
         </form>
+  <script>
+          
+          function fetchCompanyCredentials(){
+            if($("#company").val() != "" || $("#company").val == null){
+                //ajax call should be made to populate the credentials of the company
+                $("#companyCred").attr("style","")
+                
+              }
+            else{
+              $("#companyCred").attr("style","display:none");
+            }
+          }
 
+          </script>
+                    
 
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.js"></script>
-     <script src="js/popover.js"></script>
   </body>
 </html>
   
