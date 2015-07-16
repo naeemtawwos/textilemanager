@@ -1,0 +1,26 @@
+{
+  "main": "login.html",
+  "name": "Tabreez Textile Manager",
+  "description": "An inventory manager for the Textile Industry",
+  "version": "0.1.0",
+  "keywords": [ "Tabreez", "Textile Industry", "inventory" ],
+  "bugs":["mailto:naeem@gmail.com","mailto:shafeekmohammad.z@gmail.com"],
+  "window": {
+    "title": "node-webkit demo",
+    "icon": "link.png",
+    "toolbar": true,
+    "frame": false,
+    "width": 1200,
+    "height": 800,
+    "position": "mouse",
+    "min_width": 400,
+    "min_height": 200,
+    "max_width": 2400,
+    "max_height": 2100,
+    "resizable":true
+  },
+  "webkit": {
+    "plugin": true
+    
+  }
+}
