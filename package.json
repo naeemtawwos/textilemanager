@@ -22,5 +22,8 @@
   "webkit": {
     "plugin": true
     
+  },
+  "chromium-args":{
+    "unlimited-storage":true
   }
 }
