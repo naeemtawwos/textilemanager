@@ -1,6 +1,6 @@
 {
   "main": "login.html",
-  "name": "Tabreez Textile Manager",
+  "name": "Tabreez",
   "description": "An inventory manager for the Textile Industry",
   "version": "0.1.0",
   "keywords": [ "Tabreez", "Textile Industry", "inventory" ],
