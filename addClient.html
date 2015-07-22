@@ -7,7 +7,9 @@
     <meta name="description" content="In this page the details of a new lot is entered.">
     <meta name="author" content="Naeem">
     <link rel="icon" href="../../favicon.ico">
-
+    <script src="js/database.js"></script>  
+    <script src="js/jquery.js"></script>
+    <script src="js/controller.js"></script>
     <title>Add a new client</title>
 
     <!-- Bootstrap core CSS -->
@@ -48,32 +50,31 @@
           </div>
         </nav>
 
-
-        <form class="form-center">
+        <form class="form-center" id="formId" action="" method="post">
           <h2 class="form-signin-heading">Add a New Client</h2>
           <label for="custName" class="sr-only">Customer Name</label>
-          <input type="text" id="custName" class="form-control" placeholder="Customer Name" required autofocus>
+          <input type="text" id="custName" name="custName" class="form-control" placeholder="Customer Name" required autofocus>
           <label for="address" class="sr-only">Address</label>
-          <textarea id="address" class="form-control" placeholder="Address..." ></textarea>
+          <textarea id="address" name="address" class="form-control" placeholder="Address..." ></textarea>
 
           <label for="city" class="sr-only">City</label>
-          <input type="text" id="city" class="form-control" placeholder="City" required>
+          <input type="text" id="city" name="city" class="form-control" placeholder="City" required>
           <label for="state" class="sr-only">State</label>
-          <input type="text" id="state" class="form-control" placeholder="State" required>
+          <input type="text" id="state" name="state" class="form-control" placeholder="State" required>
           <label for="tinNumber" class="sr-only">Tin Number</label>
-          <input type="text" id="tinNumber" class="form-control" placeholder="Tin Number">          
+          <input type="text" id="tinNumber" name="tinNumber" class="form-control" placeholder="Tin Number">          
           <label for="mobile" class="sr-only">Mobile</label>
-          <input type="text" id="mobile" class="form-control" placeholder="Mobile" required>
+          <input type="text" id="mobile" name="mobile" class="form-control" placeholder="Mobile" required>
           <label for="phone" class="sr-only">Phone</label>
-          <input type="text" id="phone" class="form-control" placeholder="Phone">
+          <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone">
           <label for="phoneAlt" class="sr-only">Alternative Phone</label>
-          <input type="text" id="phoneAlt" class="form-control" placeholder="Alternative Phone"> 
+          <input type="text" id="phoneAlt" name=""phoneAlt class="form-control" placeholder="Alternative Phone"> 
           <label for="fax" class="sr-only">Fax</label>
-          <input type="text" id="fax" class="form-control" placeholder="Fax">
+          <input type="text" id="fax" name="fax" class="form-control" placeholder="Fax">
           <label for="email" class="sr-only">E-mail</label>
-          <input type="input" id="email" class="form-control" placeholder="E-mail">
+          <input type="input" id="email" name="email" class="form-control" placeholder="E-mail">
           <label for="emailAlt" class="sr-only">Alternative E-mail</label>
-          <input type="input" id="emailAlt" class="form-control" placeholder="Alternative E-mail">          
+          <input type="input" id="emailAlt" name="emailAlt" class="form-control" placeholder="Alternative E-mail">          
 
             <!--div class="checkbox">
             <label>
@@ -85,8 +86,45 @@
 
 
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
+  <script lang="javascript">
+
+$('#formId').submit(function() {
+    var formData = JSON.stringify($('#formId').serializeObject());
+    if(saveCustomer(formData))
+    window.url="/clientAdded.html";
+});
+
+
+
+/*
+  $('#formId').submit(function() {
+    alert("efc");
+     alert($('#formId').serialize());
+     }
+  );
+
+  function experiment(){
+      alert($('#form').serialize());
+  }
+*/
+/*
+    function ajaxSubmit(){
+      $.ajax({
+        url:'js/controller.js',
+        dataType:jsonp,
+        data:$('#formId').serialize(),
+        type:post,
+        success: function(result){
+          console.log(result);
+        },
+        error:function(xhr, resp, text){
+          console.lot(xhr,resp,text);
+        }
+      });  
+    }
+  */
+  </script>
   </body>
 </html>
   
