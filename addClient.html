@@ -7,9 +7,10 @@
     <meta name="description" content="In this page the details of a new lot is entered.">
     <meta name="author" content="Naeem">
     <link rel="icon" href="../../favicon.ico">
-    <script src="js/database.js"></script>  
+    <script src="js/database-nedb.js"></script>  
     <script src="js/jquery.js"></script>
     <script src="js/controller.js"></script>
+    <script src="js/bootstrap.js"></script>
     <title>Add a new client</title>
 
     <!-- Bootstrap core CSS -->
@@ -53,6 +54,7 @@
         <form class="form-center" id="formId" action="" method="post">
           <h2 class="form-signin-heading">Add a New Client</h2>
           <label for="custName" class="sr-only">Customer Name</label>
+         
           <input type="text" id="custName" name="custName" class="form-control" placeholder="Customer Name" required autofocus>
           <label for="address" class="sr-only">Address</label>
           <textarea id="address" name="address" class="form-control" placeholder="Address..." ></textarea>
@@ -81,10 +83,18 @@
             <input type="checkbox" value="remember-me"> Remember me
             </label>
             </div-->
-          <button class="btn btn-lg btn-primary btn-block" type="submit">Save Client</button>
+          <button class="btn btn-lg btn-primary btn-block" data-toggle="modal" data-target=".bs-example-modal-sm" type="submit">Save Client</button>
         </form>
 
+        <!-- Small modal -->
 
+        <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm">
+              <div class="modal-content">
+                ...
+              </div>
+            </div>
+        </div>          
 
 
   <script lang="javascript">
