@@ -81,7 +81,9 @@ db.suppliers_Collection.insert(
 
 
 //collection to maintain 'auto_incrementing';
-db.pkTracker_Collection.insert({_id:"customer_id",seq:1 });
+db.pkTracker_Collection.insert({_id:"customer_id",seq:0 });
+db.pkTracker_Collection.insert({_id:"supplier_id",seq:0 });
+
 }
 
 
@@ -93,68 +95,83 @@ db.pkTracker_Collection.insert({_id:"customer_id",seq:1 });
 add: Whether to add or remove the customer, true denotes add
 cust: the object containing the details of the customer or in case of remove, the id of the customer to be removed
 */
-function addRemCustomer(add,cust){
-
+function addRemCustomer(cust, add){
 	if(add == true){
 		var nexSeq;
 		cust=JSON.parse(cust);
 		//cust["_id"]= nexSeq;
-		var result = db.pkTracker_Collection.update({'_id':'customer_id'},{$inc:{'seq':1}}); // increment the value of the counter by one
-		var results = db.pkTracker_Collection.find({'_id':'customer_id'},{'seq':1,'_id':0}, function(err, docs){
+		db.pkTracker_Collection.update({'_id':'customer_id'},{$inc:{'seq':1}}); // increment the value of the counter by one
+		db.pkTracker_Collection.find({'_id':'customer_id'},{'seq':1,'_id':0}, function(err, docs){
 			nexSeq=docs[0]['seq'];
 			assert.equal(null,err);
-			console.log("ERROR IN INSERTING TO PKTRACKER COLLECTION :-"+err);
+			console.log(err);
 			cust._id=nexSeq;
 			db.customers_Collection.insert(cust,function(err,result){
-			assert.equal(null,err);
-			console.log(err);
-			for(var key in result) {
-    			var value = result[key];
-				console.log(key+".........>"+value);
-				}
+					assert.equal(null,err);
+					console.log(err);
 			});
 		});
-		console.log("::::::::::::::::"+JSON.stringify(results));
 
-		
-
-		
-
-			
 	}
 	else{
 		db.customers_Collection.remove({"_id":cust});
 	}
 }
 
+
+
 /*
 @args
 add: Whether to add or remove the supplier, true denotes add
 cust: the object containing the details of the supplier or in case of remove, the id of the supplier to be removed
 */
-function addRemSupplier(add, supplier){
+function addRemSupplier(supplier, add){
 	if(add == true){
-		suppliers_Collection.insert(cust);
+		supplier=JSON.parse(supplier);
+		db.suppliers_Collection.insert(supplier,function(err,result){
+					assert.equal(null,err);
+					console.log(err);
+		});
+			
 	}
 	else{
-		suppliers_Collection.remove({"_id":cust});
-	}	
+		suppliers_Collection.remove({"_id":supplier});
+	}
+
 }
 
 
 /*information related to a supplier can be chanded/update
 	The mongo save method replaces an existing document completely with the new document
 */
-function updateSupplierInfo(id, cust){
-	db.suppliers_Collection.save({"_id":id}, cust);
+function updateSupplierInfo(id, supplier){
+	supplier= JSON.parse(supplier);
+	db.suppliers_Collection.save({"_id":id}, supplier);
 }
 /*information related to a customer can be chanded/update
 	The mongo save method replaces an existing document completely with the new document
 */
 function updateCustomerInfo(id,cust ){
+	cust = JSON.parse(cust);
 	db.customers_Collection.save({"_id":id}, cust);
 }
 
+
+function getCustomerCollection(){
+	var ret = null;
+	db.customers_Collection.find({});
+	db.customers_Collection.find({}, function (err, docs){
+		//ret = docs;
+		customers = docs;
+	});
+/*
+	setTimeout(function() {
+		alert(JSON.stringify(customers));
+		return ""; // trick to return after the call back function is called
+		
+	},1000);
+*/
+}
 
 
 function addNewLot(lot){

@@ -2,11 +2,19 @@
 
 
 function saveCustomer(formData){
-    
-    addRemCustomer(add=true,formData);
+    addRemCustomer(formData, add = true);
 	return true;
 }
 
+;
+function loadCustomers(){
+  db.customers_Collection.find({});
+  db.customers_Collection.find({}, function (err, docs){
+        //ret = docs;
+        customers = docs;
+
+  });
+}
 
 function login(){
 

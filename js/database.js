@@ -1,25 +1,44 @@
-var Engine = require('tingodb')(),
+
+var MongoClient = require('mongodb').MongoClient,
     assert = require('assert');
 
-var textileManagerDB = new Engine.Db('dbscript/', {});
+MongoClient.connect("mongodb://localhost:27017/textileManagerDB", function(err, db) {
+  if(!err) {
+    console.log("We are connected");
+  }
+  else{
+  	console.log(err);
+  }
+});
 
+var db = new MongoClient.Db('test', new MongoClient.Server('locahost', 27017));
+
+
+
+//var Engine = require('tingodb')({'nativeObjectID':true}),
+  
+// assert = require('assert');
 
 var customers_Collection;
-customers_Collection=textileManagerDB.collection("textileManagerDB");
+customers_Collection = db.collection("textileManagerDB");
 var suppliers_Collection;
 var loginCreds_Collection;
 var lot_Collection;
-var count_Collection;
-var counters_Collection = textileManagerDB.collection("textileManagerDB");
+var count_Collection;//count as in the type of the yarn purchased
+var pkTracker_Collection = db.collection("textileManagerDB");//count as a tracker for the autoincrement feature
+
+
+
+
 
 //tis function initializes the database and the collections.
 //if the database does not exist a new database is created, if it exists the existing database is used
 function initializeDB(){
 // a collection in Mongo is roughly equalto a table in RDBMS
-loginCreds_Collection = textileManagerDB.collection("textileManagerDB");
-suppliers_Collection = textileManagerDB.collection("textileManagerDB");
-customers_Collection = textileManagerDB.collection("textileManagerDB");
-lot_Collection = textileManagerDB.collection("textileManagerDB");
+loginCreds_Collection = db.collection("textileManagerDB");
+suppliers_Collection = db.collection("textileManagerDB");
+customers_Collection = db.collection("textileManagerDB");
+lot_Collection = db.collection("textileManagerDB");
 /*
 LOT will have 
 	i)a unique, preferebally auto_incrementable id
@@ -31,8 +50,10 @@ LOT will have
 	vii) price purchased for
 */
 
-count_Collection = textileManagerDB.collection("textileManagerDB");
+count_Collection = db.collection("textileManagerDB");
 //will contain a count type and description
+
+//console.log("**********"+suppliers_Collection.find({'_id':'address01'}).get("_fields"));
 
 
 count_Collection.insert({_id:"01", count:"30s", description:"combed"}, function(err, result) {
@@ -56,11 +77,14 @@ suppliers_Collection.insert(
 		assert.equal(null,err);
 	});
 
-}
 
 
 //collection to maintain 'auto_incrementing';
-counters_Collection.insert({_id:"customer_id",seq:1 });
+pkTracker_Collection.insert({_id:"customer_id",seq:1 });
+
+}
+
+
 
 
 
@@ -73,11 +97,13 @@ function addRemCustomer(add,cust){
 
 	if(add == true){
 		cust=JSON.parse(cust);
-		cust._id=getNextSequence("customer_id");
-		customers_Collection.insert(cust, function(err,result){
-			assert.equal(null,err);
-			console.log(err);
-		});
+		alert(cust._id+"....");
+		alert(JSON.stringify(cust));		
+		cust[_id]=getNextSequence("customer_id");
+		customers_Collection.insert(cust,function(err,result){
+		assert.equal(null,err);
+		console.log(err);
+	});
 
 	}
 	else{
@@ -146,17 +172,18 @@ function errorCallback(err, result) {
 
 
 
+//function used for the implementation of autoincrementing primarykey
+function getNextSequence(name) {
 
-function getNextSequence(name) {/*
-	customers_Collection.insert(cust, function(err,result){
-			assert.equal(null,err);
-			console.log(err);
-		});*/
+	pkTracker_Collection.find({'_id':'customer_id'},{'seq':1,'_id':0});
 
-	var ret = counters_Collection.find({'_id':name});
-	counters_Collection.update({'_id':name},{$inc:{'seq':1}});
-	var ret = counters_Collection.find({'_id':name});
-   
-
-   return ret.seq;
+	pkTracker_Collection.update({'_id':name},{$inc:{'seq':1}}); // increment the value of the counter by one
+	//var ret = pkTracker_Collection.findOne();
+	var ret = pkTracker_Collection.find({'_id':name},{'seq':1,'_id':0}); // return the increment value, 		
+	console.log(ret+"----------");
+	for(var key in ret) {
+    	var value = ret[key];
+		console.log(".........>"+key);
+	}
+	return ret;													 //which can be used as primary key for insert
 }

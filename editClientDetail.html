@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width; initial-scale=1; user-scalable=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
     <meta name="description" content="In this page the details of a new lot is entered.">
     <meta name="author" content="Naeem">
     <link rel="icon" href="../../favicon.ico">
@@ -17,7 +17,8 @@
     <link href="css/styles.css" rel="stylesheet">
 
 <script src="js/jquery.js"></script>
-    
+<script src="js/database-nedb.js"></script>   
+<script src="js/controller.js"></script> 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -91,9 +92,21 @@
           <button class="btn btn-lg btn-primary btn-block" type="submit">Save Client</button>
         </form>
   <script>
+          var customers;
+          loadCustomers();
+         
+          setTimeout(function() {
+            alert(JSON.stringify(customers));
+            for(i=0; i < customers.length+1; i++){
+              for(key in customers[i]){
+                  //$('#custName').val = customers[i]['custName'];
+                  console.log(key+"."+customers[i][key]);
+                }
+              }
           
+          }, 1000);
           function fetchCompanyCredentials(){
-            if($("#company").val() != "" || $("#company").val != null){
+          if($("#company").val() != "" || $("#company").val != null){
                 //ajax call should be made to populate the credentials of the company
                 $("#companyCred").attr("style","")
                 
@@ -103,7 +116,7 @@
             }
           }
 
-          </script>
+  </script>
                     
 
 
