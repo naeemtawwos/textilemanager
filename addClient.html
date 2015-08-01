@@ -110,7 +110,7 @@
   <script lang="javascript">
 
 $('#formId').submit(function(e) {
-     var formData = JSON.stringify($('#formId').serializeObject());
+    var formData = JSON.stringify($('#formId').serializeObject());
     if(saveCustomer(formData)){
       e.preventDefault()
             $('#modal-from-dom').modal({

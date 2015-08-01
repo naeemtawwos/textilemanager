@@ -52,20 +52,15 @@
         </nav>
 
 
-        <form class="form-center">
-          <h2 class="form-signin-heading">Select client to edit</h2>
+        <form class="form-center" id="formId">
+          <h2 id="heading" class="form-signin-heading">Select client to View Details or Edit</h2>
           <label for="company" class="sr-only">Client Name</label>
-          <select class="form-control" id="company" name="company" placeholder="Select Client to Edit" required onchange="fetchCompanyCredentials();">
+          <select class="form-control" id="company" name="custName" placeholder="Select Client to Edit" required onchange="fetchCompanyCredentials();">
             <option value=""></option>
-            <option value="marwa_fabrics">Marwa Fabrics</option>
-            <option value="safa_fabrics">Safa Fabrics</option>
-            <option value="fasil_fabrics">Fasil Fabrics</option>
-            <option value="classic_polo">Classic_Polo</option>
-          </select>
+            </select>
           <div style="display:none" id="companyCred">
-            <input type="text" id="custName" class="form-control" placeholder="Customer Name" required autofocus>
             <label for="address" class="sr-only">Address</label>
-            <textarea id="address" class="form-control" placeholder="Address..." ></textarea>
+            <textarea id="address" class="form-control" placeholder="Address..." autofocus ></textarea>
             <label for="city" class="sr-only">City</label>
             <input type="text" id="city" class="form-control" placeholder="City" required>
             <label for="state" class="sr-only">State</label>
@@ -84,37 +79,90 @@
             <input type="input" id="email" class="form-control" placeholder="E-mail">
             <label for="emailAlt" class="sr-only">Alternative E-mail</label>
             <input type="input" id="emailAlt" class="form-control" placeholder="Alternative E-mail">
+            <input type="hidden" id="_id" class="form-control">
+            
             <!--div class="checkbox">
             <label>
             <input type="checkbox" value="remember-me"> Remember me
             </label>
             </div-->
+            
           <button class="btn btn-lg btn-primary btn-block" type="submit">Save Client</button>
         </form>
-  <script>
-          var customers;
-          loadCustomers();
-         
-          setTimeout(function() {
-            alert(JSON.stringify(customers));
-            for(i=0; i < customers.length+1; i++){
-              for(key in customers[i]){
-                  //$('#custName').val = customers[i]['custName'];
-                  console.log(key+"."+customers[i][key]);
+
+        <script>
+              var customers = null;
+              db.customers_Collection.find({}, function (err, docs){
+                customers = docs;
+                if(customers != null){
+                  for(i=0; i < customers.length; i++){//loop through the customers collection
+                    $('#company').append($('<option>',{//add options tag to the select tag
+                      value : customers[i].custName,// thus populating the list of customers
+                      id : customers[i].custName,// in the DropDown
+                      text : customers[i].custName
+                    }));
+                  }
                 }
-              }
-          
-          }, 1000);
+                else{// if the database has no list of customers, tell the users there are no customers
+                  $('#formId').attr("style","display:none");
+                  $('#formId').prepend($('<h1>',{
+                    text:"SORRY YOU HAVE NO CUSTOMERS IN YOUR LIST, GO TO ADD CUSTOMER TO ADD A NEW CUSTOMER"
+                  }))
+                }
+              });
+              
           function fetchCompanyCredentials(){
+          //if a customer is selected in the Drop Down Menu, below code is executed
           if($("#company").val() != "" || $("#company").val != null){
-                //ajax call should be made to populate the credentials of the company
-                $("#companyCred").attr("style","")
-                
-              }
-            else{
+                $("#companyCred").attr("style","");// } code to 
+                $("#heading").html("View and Edit");//} show the form 
+                for(i=0; i < customers.length; i++){ // loop through the customers list
+                      if(customers[i].custName == $('#company').val()){//select the customer that is selcted in the Drop Down
+                      for(key in customers[i]){//loop through the JSON of the selected customer
+                        if(key != null && key != 'custName'){//populate everything from the database                    
+                           alert(key+".."+customers[i][key]);//except the custName which was populated already
+                           $('#'+key).val(customers[i][key]);
+                        }
+                      }
+                      
+                    }
+              }   
+            }
+            else{//if the drop down menu is not selected, the form is hidden
               $("#companyCred").attr("style","display:none");
             }
           }
+
+
+
+          $('#formId').submit(function(e) {
+          var formData $('#formId').serializeObject();
+          db.suppliers_Collection.update({"_id":$('#_id').val()}, formData, {}, function(){
+            e.preventDefault()
+              $('#modal-from-dom').modal({
+                show: true, 
+                backdrop: 'static',
+                keyboard: true
+            })
+          });
+          //if(saveCustomer(formData)){
+              e.preventDefault()
+              $('#modal-from-dom').modal({
+                show: true, 
+                backdrop: 'static',
+                keyboard: true
+            })
+          //}
+          //else{
+
+          //}
+      //$('tabModal').show();
+
+     
+
+
+});
+
 
   </script>
                     
