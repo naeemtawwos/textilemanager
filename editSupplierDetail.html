@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <meta name="description" content="In this page the details of a new lot is entered.">
+    <meta name="author" content="Naeem">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Edit client credentiials</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/styles.css" rel="stylesheet">
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/database-nedb.js"></script>   
+<script src="js/controller.js"></script> 
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-static-top">
+          <div class="container">
+            <div class="navbar-header">
+              <!--button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button -->
+              <a class="navbar-brand" href="#">Tabreez</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+
+        <form class="form-center" id="formId">
+          <h2 id="heading" class="form-signin-heading">Select client to View Details or Edit</h2>
+          <label for="company" class="sr-only">Client Name</label>
+          <select class="form-control" id="company" placeholder="Select Client to Edit" required onchange="fetchCompanyCredentials();" >
+            <option value="">--SELECT SUPPLIER--</option>
+          </select>
+          <div style="display:none" id="companyCred">
+            <label for="custName" class="sr-only">Supplier Name</label>
+            <input type="text" id="custName" name="custName" class="form-control form-field" placeholder="custName" required />
+            <textarea id="address" name="address" class="form-control form-field" placeholder="Address..." autofocus ></textarea>
+            <label for="city" class="sr-only">City</label>
+            <input type="text" id="city" name="city" class="form-control form-field" placeholder="City" required />
+            <label for="state" class="sr-only">State</label>
+            <input type="text" id="state" name="state" class="form-control form-field" placeholder="State" required />
+            <label for="tinNumber" class="sr-only">Tin Number</label>
+            <input type="text" id="tinNumber" name="tinNumber" class="form-control form-field" placeholder="Tin Number" required />            
+            <label for="mobile" class="sr-only">Mobile</label>
+            <input type="text" id="mobile" name="mobile" class="form-control form-field" placeholder="Mobile" required />
+            <label for="phone" class="sr-only">Phone</label>
+            <input type="text" id="phone" name="phone" class="form-control form-field" placeholder="Phone" />
+            <label for="phoneAlt" class="sr-only">Alternative Phone</label>
+            <input type="text" id="phoneAlt" name="phoneAlt" class="form-control form-field" placeholder="Alternative Phone" />            
+            <label for="fax" class="sr-only">Fax</label>
+            <input type="text" id="fax" name="fax" class="form-control form-field" placeholder="Fax" />
+            <label for="email" class="sr-only">E-mail</label>
+            <input type="input" id="email" name="email" class="form-control form-field" placeholder="E-mail" />
+            <label for="emailAlt" class="sr-only">Alternative E-mail</label>
+            <input type="input" id="emailAlt" name="emailAlt" class="form-control form-field" placeholder="Alternative E-mail" />
+            <!--input type="hidden" id="_id" name="_id" class="form-control" /-->
+            </div>  
+            <!--div class="checkbox">
+            <label>
+            <input type="checkbox" value="remember-me"> Remember me
+            </label>
+            </div-->
+            
+          <button class="btn btn-lg btn-primary btn-block" data-toggle="modal" data-target=".bs-example-modal-sm" type="submit">Save Client</button>
+        </form>
+
+        <div id="modal-from-dom" class="modal fade" style="display:none;">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                  <h4 class="modal-title" id="mySmallModalLabel">Supplier Added</h4>
+              </div>
+              <div class="modal-body">
+                    The details of the Supplier has been added successfully. You can add another supplier or go back to Dashboard.
+              </div>
+            </div>
+          </div> 
+        </div>
+
+
+
+        <script>
+
+          var suppliers = null;
+          var id;
+          fetchSupplierList();
+          function fetchSupplierList(){              
+              db.suppliers_Collection.find({}, function (err, docs){
+                suppliers = docs;
+                  if(suppliers != null){
+                    $('#company').children('option').not("[value='']").remove();    
+                    for(i=0; i < suppliers.length; i++){//loop through the customers collection
+                      $('#company').append($('<option>',{//add options tag to the select tag
+                        value : suppliers[i].custName,// thus populating the list of customers
+                        id : suppliers[i].custName,// in the DropDown
+                        text : suppliers[i].custName,
+                        class: "customerList"
+                        }));
+                      }
+                  }
+                
+                  else{// if the database has no list of customers, tell the users there are no customers
+                    $('#formId').attr("style","display:none");
+                    $('#formId').prepend($('<h1>',{
+                      text:"SORRY YOU HAVE NO SUPPLIERS IN YOUR LIST, GO TO ADD CUSTOMER TO ADD A NEW CUSTOMER"
+                    }))
+                  }
+                });
+              }
+              
+          function fetchCompanyCredentials(){
+          //if a customer is selected in the Drop Down Menu, below code is executed
+            var formFields = [];
+            $('.form-field').each(function(){
+              $(this).val('');}//reset the values of the form fields from the previous selection before the new selection is populated.
+            );
+
+            if($("#company").val() != "" || $("#company").val != null){
+                
+                fetchSupplierList();
+                $("#companyCred").attr("style","");// } code to 
+                $("#company").removeAttr("required");
+                $("#heading").html("View and Edit");//} show the form 
+                for(i=0; i < suppliers.length; i++){ // loop through the customers list
+                      if(suppliers[i].custName == $('#company').val()){//select the customer that is selcted in the Drop Down
+                      for(key in suppliers[i]){//loop through the JSON of the selected customer
+                        if(key != null && key != "_id" && key){//populate everything from the database                    
+                           $('#'+key).val(suppliers[i][key]);
+                        }
+                        else if(key == "_id"){
+                          id=suppliers[i][key]
+                        }
+                      }
+                      
+                    }
+              }   
+            }
+            else{//if the drop down menu is not selected, the form is hidden
+              $("#companyCred").attr("style","display:none");
+              $("#company").attr("required","");
+            }
+          }
+
+
+
+          $('#formId').submit(function(e) {
+          var formData = $('#formId').serializeObject();
+          alert(JSON.stringify(formData));
+          //db.suppliers_Collection.update({"_id":$('#_id').val()}, formData, {}, function(err, docs){
+            db.suppliers_Collection.update({"_id":id}, formData, {}, function(err, docs){
+            console.log(docs);
+            console.log(err);
+          });
+
+          e.preventDefault()
+            $('#modal-from-dom').modal({
+                show: true, 
+                backdrop: 'static',
+                keyboard: true
+          })
+        });
+
+
+  </script>
+                    
+
+
+  </body>
+</html>
+  
