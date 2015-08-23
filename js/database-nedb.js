@@ -71,6 +71,7 @@ db.loginCreds_Collection.insert([
   });
 
 
+/*
 db.suppliers_Collection.insert(
 	{_id:"address01", name:"Mangalam Yarns", tinNo:123456, phoneNo1:"+919952494995", emailId : "naeem.mailto@gmail.com", altPhone:"+910000000", phoneNo2:"+91888888888",  streetAddres:"Palladam Road", state:"TN", city:"mangalam"  },
 	function(err,insertedDoc){
@@ -78,12 +79,49 @@ db.suppliers_Collection.insert(
 		console.log(err);
 	});
 
-
+*/
 
 //collection to maintain 'auto_incrementing';
-db.pkTracker_Collection.insert({_id:"customer_id",seq:0 });
-db.pkTracker_Collection.insert({_id:"supplier_id",seq:0 });
+	db.pkTracker_Collection.insert({_id:"customer_id",seq:0 });
+	db.pkTracker_Collection.insert({_id:"supplier_id",seq:0 });
+	var thisyear = new Date().getFullYear()
+	//var id='00000';//gives the formate of yyyy<lotid> yyyy will be the current year and lotid will be fourdigit autoincrement
+	db.pkTracker_Collection.insert({_id:"lot_id",seq:'00000',seqNum:0});
+}
 
+
+
+function addNewLot(lot){
+	var thisyear = new Date().getUTCYear();
+	var thismonth = new Date().getUTCMonth()+1;
+	var thisDay = new Date().getUTCDate();
+	
+	var nexSeq;
+	lot=JSON.parse(lot);
+		//cust["_id"]= nexSeq;
+	/*
+	db.pkTracker_Collection.find('_id':'lot_id',{'seq':1}, function(err, docs){
+		if(docs[0]['date'] == today){
+
+					
+	}
+
+
+	});*/	
+	db.pkTracker_Collection.update({'_id':'lot_id'},{$inc:{'seq':1}}); //increment the value of the counter by one
+	db.pkTracker_Collection.find({'_id':'lot_id'},{'seq':1,'_id':0}, function(err, docs){
+			nexSeq=docs[0]['seq'];
+			assert.equal(null,err);
+			console.log(err);
+			lot._id=nexSeq;
+			db.lot_Collection.insert(lot,function(err,result){
+					assert.equal(null,err);
+					console.log(err);
+			});
+		});
+
+
+	db.lot_Collection.insert(lot);
 }
 
 
@@ -126,17 +164,25 @@ add: Whether to add or remove the supplier, true denotes add
 cust: the object containing the details of the supplier or in case of remove, the id of the supplier to be removed
 */
 function addRemSupplier(supplier, add){
+
 	if(add == true){
+		var nexSeq;
 		supplier=JSON.parse(supplier);
-		db.suppliers_Collection.insert(supplier,function(err,result){
+		//cust["_id"]= nexSeq;
+		db.pkTracker_Collection.update({'_id':'supplier_id'},{$inc:{'seq':1}}); // increment the value of the counter by one
+		db.pkTracker_Collection.find({'_id':'supplier_id'},{'seq':1,'_id':0}, function(err, docs){
+			nexSeq=docs[0]['seq'];
+			assert.equal(null,err);
+			console.log(err);
+			supplier._id=nexSeq;
+			db.suppliers_Collection.insert(supplier,function(err,result){
 					assert.equal(null,err);
 					console.log(err);
+			});
 		});
-			
+
 	}
-	else{
-		suppliers_Collection.remove({"_id":supplier});
-	}
+	
 
 }
 
@@ -173,10 +219,6 @@ function getCustomerCollection(){
 */
 }
 
-
-function addNewLot(lot){
-	db.lot_Collection.insert(lot);
-}
 
 function addNewCountType(count){
 	db.count_Collection.insert(count);

@@ -1,1 +1,2 @@
-{"_id":"address01","name":"Mangalam Yarns","tinNo":123456,"phoneNo1":"+919952494995","emailId":"naeem.mailto@gmail.com","altPhone":"+910000000","phoneNo2":"+91888888888","streetAddres":"Palladam Road","state":"TN","city":"mangalam"}
+{"custName":"Mangalam Yarns","address":"Address","city":"Mangalam","state":"Tamil Nadu","tinNumber":"1123123123","mobile":"9952494995","phone":"sdfasdf","fax":"123123","email":"naeem.mailto@gmail.com","emailAlt":"naeem.mailto@gmail.com","_id":2}
+{"custName":"sdfasfd","address":"asdfasdfAddress","city":"adsfasdf","state":"asdfasdf","tinNumber":"adfadf","mobile":"asdfasdf","phone":"asdfasdf","fax":"asdfsdf","email":"naeem.mailto@gmail.com","emailAlt":"naeem.mailto@gmail.com","_id":3}

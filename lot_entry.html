@@ -15,6 +15,11 @@
 
     <!-- Custom styles for this template -->
     <link href="css/styles.css" rel="stylesheet">
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/database-nedb.js"></script>   
+<script src="js/controller.js"></script> 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -49,24 +54,29 @@
 
 
         <form class="form-center">
-          <h2 class="form-signin-heading">Enter the details of Lot</h2>
-          <label for="yarnCat" class="sr-only"></label>
-          <input type="text" id="yarnCat" class="form-control" placeholder="Yarn Category" required autofocus>
+          <h2 class="form-signin-heading">Enter the details of New Lot</h2>
+           <select class="form-control" id="count" name="company" placeholder="Yarn Count" required autofocus>
+             <option value="">--COUNT--</option>
+            <option value="1">30S Combed</option>
+            <option value="2">30S SemiCombed</option>
+            <option value="3">34S Combed</option>
+            <option value="4">34S SemiCombed</option>
+            <option value="5">40S Combed</option>
+            <option value="6">40S SemiCombed</option>
+          </select> 
            COMMENT:Show a popover in the right with the address of the client with ajax call
            
-           <select class="form-control" id="company" name="company" placeholder="Company" required data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">
-             <option value=""></option>
-            <option value="marwa_fabrics">Marwa Fabrics</option>
-            <option value="safa_fabrics">Safa Fabrics</option>
-            <option value="fasil_fabrics">Fasil Fabrics</option>
-            <option value="classic_polo">Classic_Polo</option>
+           <select class="form-control" id="company" required name="company" placeholder="Company" required data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">
+             <option value="">--MILL--</option>
           </select>
-          <label for="quantity" class="sr-only">Quantity Purchased</label>
-          <input type="text" id="quantity" class="form-control" placeholder="Quantity Purchased" required >
+          <label for="quantity" class="sr-only">Quantity in KGs</label>
+          <input type="text" id="quantityKG" class="form-control" placeholder="Quantity in KGs" required style="width:150px;display:inline">
+          <label for="quantity" class="sr-only">Quantity in Grams</label>
+          <input type="text" id="quantityGrams" class="form-control" placeholder="Quantity in Grams" required style="width:150px;display:inline">
           <label for="price" class="sr-only">Total Price Amount</label>
           <input type="text" id="price" class="form-control" placeholder="Total Price Amount" required >
           <label for="purchaseDate" class="sr-only">Purchase Date</label>
-          <input type="date" data-provide="datepicker" id="purchaseDate" class="form-control" placeholder="Purchased Date" required >
+          <input type="date" data-provide="datepicker" id="purchaseDate" class="form-control" placeholder="Purchased Date" required>
           <label for="invoiceNumber" class="sr-only">Invoice Number</label>
           <input type="text" id="invoiceNumber" class="form-control" placeholder="Invoice Number" required >
           <label for="invoiceDate" class="sr-only">Invoice Date</label>
@@ -78,16 +88,54 @@
             <input type="checkbox" value="remember-me"> Remember me
             </label>
             </div-->
-          <button class="btn btn-lg btn-primary btn-block" type="submit">Add New Lot</button>
+            
+          <button class="btn btn-lg btn-primary btn-block" data-toggle="modal" data-target=".bs-example-modal-sm" type="submit">Add This Lot</button>
         </form>
 
+        <div id="modal-from-dom" class="modal fade" style="display:none;">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
 
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                  <h4 class="modal-title" id="mySmallModalLabel">Customer Added</h4>
+              </div>
+              <div class="modal-body">
+                    The details of the customer has been added successfully. You can add another customer or go back to Dashboard.
+              </div>
+            </div>
+          </div> 
+        </div>
+		<script>
+    var suppliers = null;
+          var id;
+          fetchSuppliersList();
+          function fetchSuppliersList(){
+              db.suppliers_Collection.find({}, function (err, docs){
+                suppliers = docs;
+                  if(suppliers != null){
+                    $('#company').children('option').not("[value='']").remove();    
+                    for(i=0; i < suppliers.length; i++){//loop through the customers collection
+                      $('#company').append($('<option>',{//add options tag to the select tag
+                        value : suppliers[i].custName,// thus populating the list of customers
+                        id : suppliers[i].custName,// in the DropDown
+                        text : suppliers[i].custName,
+                        class: "customerList"
+                        }));
+                      }
+                  }
+                
+                  else{// if the database has no list of customers, tell the users there are no customers
+                    $('#formId').attr("style","display:none");
+                    $('#formId').prepend($('<h1>',{
+                      text:"SORRY YOU HAVE NO CUSTOMERS IN YOUR LIST, GO TO ADD CUSTOMER TO ADD A NEW CUSTOMER"
+                    }))
+                  }
+                });
+              }
+          
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.js"></script>
-     <script src="js/popover.js"></script>
+</script>
   </body>
 </html>
   

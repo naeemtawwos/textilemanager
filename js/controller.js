@@ -6,7 +6,13 @@ function saveCustomer(formData){
 	return true;
 }
 
-;
+
+function saveSupplier(formData){
+    addRemSupplier(formData, add = true);
+    return true;
+}
+
+
 function loadCustomers(){
   db.customers_Collection.find({});
   db.customers_Collection.find({}, function (err, docs){
