@@ -1,1 +1,7 @@
-{"_id":"01","count":"30s","description":"combed"}
+{"_id":1,"count":"30s SemiCombed"}
+{"_id":2,"count":"30s Combed"}
+{"_id":3,"count":"34s SemiCombed"}
+{"_id":4,"count":"34s Combed"}
+{"_id":5,"count":"40s SemiCombed"}
+{"_id":6,"count":"40s Combed"}
+{"count":"44C SemiCombed","_id":7}

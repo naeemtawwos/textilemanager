@@ -7,6 +7,8 @@
     <meta name="description" content="In this page the details of a new lot is entered.">
     <meta name="author" content="Naeem">
     <link rel="icon" href="../../favicon.ico">
+    <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.js"></script>
 
     <title>Enter New Lot</title>
 
@@ -16,8 +18,22 @@
     <!-- Custom styles for this template -->
     <link href="css/styles.css" rel="stylesheet">
 
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.js"></script>
+<style>
+.form-control{
+  width:300px;
+
+}
+.form-center{
+  max-width:450px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.btn-lg{
+  width:300px;
+}
+</style>
+
+
 <script src="js/database-nedb.js"></script>   
 <script src="js/controller.js"></script> 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -53,22 +69,39 @@
         </nav>
 
 
-        <form class="form-center">
-          <h2 class="form-signin-heading">Enter the details of New Lot</h2>
-           <select class="form-control" id="count" name="company" placeholder="Yarn Count" required autofocus>
-             <option value="">--COUNT--</option>
-            <option value="1">30S Combed</option>
-            <option value="2">30S SemiCombed</option>
-            <option value="3">34S Combed</option>
-            <option value="4">34S SemiCombed</option>
-            <option value="5">40S Combed</option>
-            <option value="6">40S SemiCombed</option>
-          </select> 
-           COMMENT:Show a popover in the right with the address of the client with ajax call
+<center><h2 class="form-signin-heading">Enter the details of New Lot</h2></center>
+        
+        <form class="form-center" style="clear:both">
+          
+           <select class="form-control" style="display:inline;" id="count" name="count" placeholder="Yarn Count" required autofocus>
+             <option value="" >--YARN COUNT--</option>
+            </select>
+            <button type="button" class="btn btn-link" style="padding-left:7px" onclick="openModal();" data-toggle="modal" data-target=".bs-example-modal-lg" rel="popover" data-placement="right" data-content="If the count is not in the list, click to add a new count" data-trigger="hover">Add new count</button><br />
            
-           <select class="form-control" id="company" required name="company" placeholder="Company" required data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">
-             <option value="">--MILL--</option>
+
+            <script>
+            $('#company').on('mouseover', function(e){
+                      var $e = $(e.target);
+                      if ($e.is('option')){
+                      $('#company').popover('destroy');
+                      $("#company").popover({
+                        trigger: 'manual',
+                        placement: 'right',
+                        title: $e.attr("data-title"),
+                        content: $e.attr("data-content")
+                      }).popover('show');
+                    }
+
+                  });
+                  $("#company").on('mouseleave', function(e) {
+                    $('#company').popover('destroy');
+                  });
+            </script>
+           <select class="form-control" style="display:inline" id="company" required name="company" placeholder="Company">
+             <option value="" data-title="" data-content="">--MILL--</option>
           </select>
+          <a type="button" href="addClient.html" class="btn btn-link" style="padding-left:7px" rel="popover" data-placement="right" data-content="If the mill you are looking for is not in the list or there are no mills in the list, click on the link to add the details of the mill." data-trigger="hover">Add new mill</a><br />
+          
           <label for="quantity" class="sr-only">Quantity in KGs</label>
           <input type="text" id="quantityKG" class="form-control" placeholder="Quantity in KGs" required style="width:150px;display:inline">
           <label for="quantity" class="sr-only">Quantity in Grams</label>
@@ -91,6 +124,33 @@
             
           <button class="btn btn-lg btn-primary btn-block" data-toggle="modal" data-target=".bs-example-modal-sm" type="submit">Add This Lot</button>
         </form>
+        
+
+
+        <div id="modal-new-count" class="modal fade" style="display:none;">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                  <h4 class="modal-title" id="newCountHeader">Add New Yarn Count</h4>
+              </div>
+              <div class="modal-body">
+                Add new count and submit; example: 40s SemiCombed
+                  <form class="form-center" id="new-count-form">
+                  <input type="text" id="countNew" name="count" class="form-control" placeholder="New Count" required />
+                  <button class="btn btn-lg btn-primary btn-block" type="submit">SUBMIT</button>
+                </form>
+              </div>
+            </div>
+          </div> 
+        </div>
+
+          
+
+
+
+
 
         <div id="modal-from-dom" class="modal fade" style="display:none;">
           <div class="modal-dialog modal-sm">
@@ -105,12 +165,45 @@
               </div>
             </div>
           </div> 
-        </div>
-		<script>
+        </div>   
+                  <script lang="javascript">
+                  
+
+
+                  //popover a note on hovering 
+                  $(document).ready(function(){
+                    $('[rel="popover"]').popover(
+                      {trigger:'hover',place:'right'});
+
+                  });
+
+
+                //on submitting the new count form update the database
+                $('#new-count-form').submit(function(e) {
+                  var formData = JSON.stringify($('#new-count-form').serializeObject());
+                  addNewCount(formData);
+                });
+                </script>
+
+
+         <script>
+
+         //on clicking add new count, open a modal window with the form to add the new count
+    function openModal(){
+      
+      $('#modal-new-count').modal({
+                show: true, 
+                backdrop: 'static',
+                keyboard: true
+      });
+
+    }
+
     var suppliers = null;
+    var count = null; 
           var id;
-          fetchSuppliersList();
-          function fetchSuppliersList(){
+          fillDropDowns();
+          function fillDropDowns(){
               db.suppliers_Collection.find({}, function (err, docs){
                 suppliers = docs;
                   if(suppliers != null){
@@ -120,19 +213,38 @@
                         value : suppliers[i].custName,// thus populating the list of customers
                         id : suppliers[i].custName,// in the DropDown
                         text : suppliers[i].custName,
-                        class: "customerList"
+                        'data-content':suppliers[i].address,
+                        'data-title':suppliers[i].custName
                         }));
                       }
                   }
                 
                   else{// if the database has no list of customers, tell the users there are no customers
-                    $('#formId').attr("style","display:none");
-                    $('#formId').prepend($('<h1>',{
-                      text:"SORRY YOU HAVE NO CUSTOMERS IN YOUR LIST, GO TO ADD CUSTOMER TO ADD A NEW CUSTOMER"
-                    }))
+                   
                   }
-                });
+              });
+                // fill in the count drop down
+                db.count_Collection.find({}, function(err, docs){
+                count = docs;
+                if(count != null){
+                    $('#count').children('option').not("[value='']").remove();    
+                    for(i=0; i < count.length; i++){//loop through the counts collection
+                      $('#count').append($('<option>',{//add options tag to the select tag
+                        value : count[i]._id,// thus populating the list of counts
+                        id : count[i].count,// in the DropDown
+                        text : count[i].count
+                        
+                        }));
+                      }
+                  }
+                  
+              });
+
+
+
               }
+
+
           
 
 </script>

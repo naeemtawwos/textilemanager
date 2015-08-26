@@ -56,10 +56,19 @@ LOT will have
 //console.log("**********"+suppliers_Collection.find({'_id':'address01'}).get("_fields"));
 
 
-db.count_Collection.insert({_id:"01", count:"30s", description:"combed"}, function(err, insertedDoc) {
-  assert.equal(null, err);
-  console.log(err);
+db.count_Collection.insert([
+	{_id:1, count:"30s SemiCombed"},
+	{_id:2, count:"30s Combed"},
+	{_id:3, count:"34s SemiCombed"},
+	{_id:4, count:"34s Combed"},
+	{_id:5, count:"40s SemiCombed"},
+	{_id:6, count:"40s Combed"}], 
+	function(err, insertedDoc) {
+  		assert.equal(null, err);
+  		console.log(err);
   });
+db.pkTracker_Collection.insert({_id:"count_id",seq:6 });
+	
 
 
 db.loginCreds_Collection.insert([
@@ -88,6 +97,7 @@ db.suppliers_Collection.insert(
 	//var id='00000';//gives the formate of yyyy<lotid> yyyy will be the current year and lotid will be fourdigit autoincrement
 	db.pkTracker_Collection.insert({_id:"lot_id",seq:'00000',seqNum:0});
 }
+
 
 
 
@@ -133,6 +143,24 @@ function addNewLot(lot){
 add: Whether to add or remove the customer, true denotes add
 cust: the object containing the details of the customer or in case of remove, the id of the customer to be removed
 */
+
+function addNewCount(count){
+	var nexSeq;
+	count = JSON.parse(count)
+	alert(JSON.stringify(count));
+	db.pkTracker_Collection.update({'_id':'count_id'},{$inc:{'seq':1}});
+	db.pkTracker_Collection.find({'_id':'count_id'},{'seq':1,'_id':0}, function(err, docs){
+			nexSeq=docs[0]['seq'];
+			assert.equal(null,err);
+			console.log(err);
+			count._id=nexSeq;
+			db.count_Collection.insert(count,function(err,result){
+					assert.equal(null,err);
+					console.log(err);
+			});
+		});
+}
+
 function addRemCustomer(cust, add){
 	if(add == true){
 		var nexSeq;

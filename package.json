@@ -10,7 +10,7 @@
     "icon": "link.png",
     "toolbar": true,
     "frame": false,
-    "width": 900,
+    "width": 1200,
     "height": 700,
     "position": "mouse",
     "min_width": 800,
