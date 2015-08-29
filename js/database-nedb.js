@@ -102,9 +102,9 @@ db.suppliers_Collection.insert(
 
 
 function addNewLot(lot){
-	var thisyear = new Date().getUTCYear();
-	var thismonth = new Date().getUTCMonth()+1;
-	var thisDay = new Date().getUTCDate();
+	//var thisyear = new Date().getUTCYear();
+	//var thismonth = new Date().getUTCMonth()+1;
+	//var thisDay = new Date().getUTCDate();
 	
 	var nexSeq;
 	lot=JSON.parse(lot);
@@ -131,7 +131,7 @@ function addNewLot(lot){
 		});
 
 
-	db.lot_Collection.insert(lot);
+	
 }
 
 
@@ -143,6 +143,8 @@ function addNewLot(lot){
 add: Whether to add or remove the customer, true denotes add
 cust: the object containing the details of the customer or in case of remove, the id of the customer to be removed
 */
+
+
 
 function addNewCount(count){
 	var nexSeq;

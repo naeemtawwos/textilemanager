@@ -71,49 +71,32 @@
 
 <center><h2 class="form-signin-heading">Enter the details of New Lot</h2></center>
         
-        <form class="form-center" style="clear:both">
+        <form class="form-center" style="clear:both" id="formId">
           
            <select class="form-control" style="display:inline;" id="count" name="count" placeholder="Yarn Count" required autofocus>
              <option value="" >--YARN COUNT--</option>
             </select>
-            <button type="button" class="btn btn-link" style="padding-left:7px" onclick="openModal();" data-toggle="modal" data-target=".bs-example-modal-lg" rel="popover" data-placement="right" data-content="If the count is not in the list, click to add a new count" data-trigger="hover">Add new count</button><br />
+            <button type="button" class="btn btn-link" style="padding-left:7px" onclick="openModal();" data-toggle="modal" data-target=".bs-example-modal-lg" rel="popover" data-content="If the count is not in the list, click to add a new count" >Add new count</button><br />
            
 
-            <script>
-            $('#company').on('mouseover', function(e){
-                      var $e = $(e.target);
-                      if ($e.is('option')){
-                      $('#company').popover('destroy');
-                      $("#company").popover({
-                        trigger: 'manual',
-                        placement: 'right',
-                        title: $e.attr("data-title"),
-                        content: $e.attr("data-content")
-                      }).popover('show');
-                    }
 
-                  });
-                  $("#company").on('mouseleave', function(e) {
-                    $('#company').popover('destroy');
-                  });
-            </script>
-           <select class="form-control" style="display:inline" id="company" required name="company" placeholder="Company">
-             <option value="" data-title="" data-content="">--MILL--</option>
+           <select class="form-control" style="display:inline" id="company" data-content="Select the mill from which the lot was purchased" required name="mill" target placeholder="Company" rel="popover">
+             <option value="" data-title="" data-content="Select the mill from which the lot was purchased">--MILL--</option>
           </select>
-          <a type="button" href="addClient.html" class="btn btn-link" style="padding-left:7px" rel="popover" data-placement="right" data-content="If the mill you are looking for is not in the list or there are no mills in the list, click on the link to add the details of the mill." data-trigger="hover">Add new mill</a><br />
+          <a type="button" href="addClient.html" class="btn btn-link" style="padding-left:7px" rel="popover" data-content="If the mill you are looking for is not in the list or there are no mills in the list, click on the link to add the details of the mill." >Add new mill</a><br />
           
           <label for="quantity" class="sr-only">Quantity in KGs</label>
-          <input type="text" id="quantityKG" class="form-control" placeholder="Quantity in KGs" required style="width:150px;display:inline">
+          <input type="text" id="quantityKG" name="quantityKG" class="form-control" placeholder="Quantity in KGs" required style="width:150px;display:inline">
           <label for="quantity" class="sr-only">Quantity in Grams</label>
-          <input type="text" id="quantityGrams" class="form-control" placeholder="Quantity in Grams" required style="width:150px;display:inline">
+          <input type="text" id="quantityGrams" name="quantityGrams" class="form-control" placeholder="Quantity in Grams" required style="width:150px;display:inline">
           <label for="price" class="sr-only">Total Price Amount</label>
-          <input type="text" id="price" class="form-control" placeholder="Total Price Amount" required >
+          <input type="text" id="price" name="purchasePrice" class="form-control" placeholder="Total Price Amount" required >
           <label for="purchaseDate" class="sr-only">Purchase Date</label>
-          <input type="date" data-provide="datepicker" id="purchaseDate" class="form-control" placeholder="Purchased Date" required>
+          <input type="date" data-provide="datepicker" name="purchaseDate" id="purchaseDate" class="form-control" placeholder="Purchased Date" required>
           <label for="invoiceNumber" class="sr-only">Invoice Number</label>
-          <input type="text" id="invoiceNumber" class="form-control" placeholder="Invoice Number" required >
+          <input type="text" id="invoiceNumber" name="invoiceNum" class="form-control" placeholder="Invoice Number" required >
           <label for="invoiceDate" class="sr-only">Invoice Date</label>
-          <input type="date" id="invoiceDate" data-provide="datepicker" class="form-control" placeholder="Invoice Date" required >
+          <input type="date" id="invoiceDate" name="invoiceDate" data-provide="datepicker" class="form-control" placeholder="Invoice Date" required >
 
 
             <!--div class="checkbox">
@@ -167,8 +150,12 @@
           </div> 
         </div>   
                   <script lang="javascript">
-                  
-
+                  // change the content of the select tag's popover dynamically based on the content of the selcted option
+                  $('#company').change(function(){
+                    var selectedOption = $(this).find(':selected').attr('data-content');//selected option's popover content
+                    $(this).attr('data-content',selectedOption);//setting it as selected options data-content                    
+                    
+                  });
 
                   //popover a note on hovering 
                   $(document).ready(function(){
@@ -178,11 +165,11 @@
                   });
 
 
-                //on submitting the new count form update the database
-                $('#new-count-form').submit(function(e) {
-                  var formData = JSON.stringify($('#new-count-form').serializeObject());
-                  addNewCount(formData);
-                });
+                  //on submitting the new count form update the database
+                  $('#new-count-form').submit(function(e) {
+                    var formData = JSON.stringify($('#new-count-form').serializeObject());
+                    addNewCount(formData);
+                  });
                 </script>
 
 
@@ -210,10 +197,10 @@
                     $('#company').children('option').not("[value='']").remove();    
                     for(i=0; i < suppliers.length; i++){//loop through the customers collection
                       $('#company').append($('<option>',{//add options tag to the select tag
-                        value : suppliers[i].custName,// thus populating the list of customers
+                        value : suppliers[i]._id,// thus populating the list of customers
                         id : suppliers[i].custName,// in the DropDown
                         text : suppliers[i].custName,
-                        'data-content':suppliers[i].address,
+                        'data-content':suppliers[i].address+', '+suppliers[i].city+', '+suppliers[i].state+', '+' Mobile: '+suppliers[i].mobile,
                         'data-title':suppliers[i].custName
                         }));
                       }
@@ -239,11 +226,22 @@
                   }
                   
               });
+      }
 
+$('#formId').submit(function(e) {
+    var formData = JSON.stringify($('#formId').serializeObject());
+    if(saveLot(formData)){
+      e.preventDefault()
+            $('#modal-from-dom').modal({
+                show: true, 
+                backdrop: 'static',
+                keyboard: true
+      })
+    }
+    else{
 
-
-              }
-
+    }
+});
 
           
 

@@ -12,6 +12,10 @@ function saveSupplier(formData){
     return true;
 }
 
+function saveLot(formData){
+    addNewLot(formData);
+    return true;
+}
 
 function loadCustomers(){
   db.customers_Collection.find({});

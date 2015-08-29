@@ -4,6 +4,18 @@ body {
   background-color: #eee;
 }
 
+
+  input[type="date"]:before {
+    content: attr(placeholder)':' !important;
+    color: #aaa;
+    margin-right: 0.5em;
+  }
+  input[type="date"]:focus:before,
+  input[type="date"]:valid:before {
+    content: "";
+  }
+
+
 .form-center {
   max-width: 335px;
   padding: 15px;
