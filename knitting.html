@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <meta name="description" content="In this page the details of a new lot is entered.">
+    <meta name="author" content="Naeem">
+    <link rel="icon" href="../../favicon.ico">
+    <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.js"></script>
+  
+
+    <title>Process</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/styles.css" rel="stylesheet">
+
+<style>
+.form-control{
+  width:300px;
+
+}
+.form-center{
+  max-width:450px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.btn-lg{
+  width:300px;
+}
+</style>
+
+
+<script src="js/database-nedb.js"></script>   
+<script src="js/controller.js"></script> 
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-static-top">
+          <div class="container">
+            <div class="navbar-header">
+              <!--button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button -->
+              <a class="navbar-brand" href="#">Tabreez</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+
+<center><h2 class="form-signin-heading">Send Lot to process</h2></center>
+        
+        <form class="form-center" style="clear:both" id="formId">
+          
+          <select class="form-control" style="display:inline;" id="lotId" name="lotId" placeholder="Lot ID" data-content="Select the Lot" target rel="popover" required autofocus>
+             <option value="" data-title="" data-content="Select the Lot">--LOT ID--</option>
+          </sel                                                                    ect>
+form-control
+          <label for="texture" class="sr-only">Texture</label>
+          <input type="text" id="texture" name="texture" class="form-control" placeholder="Texture" required >
+          <label for="guage" class="sr-only">Guage</label>
+          <input type="text" id="guage" name="guage" class="form-control" placeholder="Guage" required >
+          <label for="gsm" class="sr-only">GSM</label>
+          <input type="text" id="gsm" name="gsm" class="form-control" placeholder="GSM" required >
+          <select class="form-control" style="display:inline" id="company" data-content="Select the company to send the lot" required name="company" target placeholder="Company" rel="popover">
+             <option value="" data-title="" data-content="Select the company to send the lot">--COMPANY--</option>
+          </select>
+          <a href="addClient.html" class="btn btn-link" style="padding-left:7px" rel="popover" data-content="If the company you are looking for is not in the list or there are no companies in the list, click on the link to add the details of the company." >Add Company</a><br />
+          <form method="post">
+
+<div id="programmeDiv" style="padding-bottom:50px">
+ <label for="dia0[]" class="sr-only">DIA</label>
+ <input type="text" id="dia0[]" name="dia[]" class="form-control" placeholder="DIA" required >
+ <label for="noOfRolls0[]" class="sr-only">NO OF ROLLS</label>
+ <input type="text" id="noOfRolls0[]" name="noOfRolls[]" class="form-control" placeholder="NO OF ROLLS" required >
+ <label for="rollWeight0[]" class="sr-only">ROLL WEIGHT</label>
+ <input type="text" id="rollWeight0[]" name="rollWeight[]" class="form-control" placeholder="ROLL WEIGHT" required >
+  <label for="totalDiaWeight0[]" class="sr-only">TOTAL WEIGHT</label>
+ <input type="text" id="totalDiaWeight0[]" name="totalDiaWeight[]" class="form-control totalWeightPerDia" placeholder="TOTAL WEIGHT" required >
+   
+
+ <input type="button" style="padding-botton:10px;" onclick="addRow(this.form);" class="btn btn-success" value="Add Another Dia" /> 
+</div>
+
+
+<input type="hidden" id="numberOfDiaRequired" name="numberOfDiaRequired" class="form-control" value="1" required >             <input type="hidden" id="totalWeight" name="totalWeight" class="form-control" value="" required >
+          
+
+          <!--<table cellpadding="0" cellspacing="0" id='table'>
+                <tr>
+                  <td id="programmeTable">
+                    <input class="form-control" id="DIA" name="item[]" type="text" value=""/>
+                    <input class="form-control" id="NoRolls" name="item[]" type="text" value=""/>
+                    <input class="form-control" id="RollWeight" name="item[]" type="text" value=""/>
+                    <input class="form-control" id="TotalWeight" name="item[]" type="text" value=""/>
+                  
+                  </td>
+                    
+
+                    <img class="add" id="addScnt" alt="[+]">&nbsp;</td>
+                  </tr>
+
+                  </table>
+-->
+            <!--div class="checkbox">
+            <label>
+            <input type="checkbox" value="remember-me"> Remember me
+            </label>
+            </div-->
+            
+          <button class="btn btn-lg btn-primary btn-block" data-toggle="modal" data-target=".bs-example-modal-sm" type="submit">Generate Programme</button>
+        </form>
+        
+
+<script lang="javascript">
+
+var rowNum = 0;
+var numberOfDiaRequired = 1;// counter to keep track of the number of the Dias
+function addRow(frm) {
+rowNum ++;
+var row = '<div id="rowNum'+rowNum+'" style="padding-top:10px;padding-bottom:10px;"><label for="dia'+rowNum+'[]" class="sr-only">DIA</label><input type="text" id="dia'+rowNum+'[]" name="dia[]" class="form-control" placeholder="DIA" required ><label for="noOfRolls'+rowNum+'[]" class="sr-only">NO OF ROLLS</label><input type="text" id="noOfRolls'+rowNum+'[]" name="noOfRolls[]" class="form-control" placeholder="NO OF ROLLS" required ><label for="rollWeight'+rowNum+'[]" class="sr-only">ROLL WEIGHT</label><input type="text" id="rollWeight'+rowNum+'[]" name="rollWeight[]" class="form-control" placeholder="ROLL WEIGHT" required ><label for="totalDiaWeight'+rowNum+'[]" class="sr-only">TOTAL WEIGHT</label><input type="text" id="totalDiaWeight'+rowNum+'[]" name="totalDiaWeight[]" class="form-control totalWeightPerDia" placeholder="TOTAL WEIGHT" required ><button style="float:right" class="btn btn-warning" onclick="removeRow('+rowNum+');">Remove Dia</button></div>';
+
+//var row = '<div id="rowNum'+rowNum+'" style="padding-top:10px;padding-bottom:10px;"><input class="form-control" type="text" name="qty[]" size="4" > <input class="form-control" type="text" name="name[]" > <button style="float:right" class="btn btn-warning" onclick="removeRow('+rowNum+');">Remove Dia</button></div>';
+$('#programmeDiv ').append(row);
+numberOfDiaRequired++;// increment so as to
+$('#numberOfDiaRequired').val(numberOfDiaRequired); 
+}
+
+function calculateTotalWeight(){
+
+
+var sum = 0;
+// or $( 'input[name^="ingredient"]' )
+$('.totalWeightPerDia').each( function( i , e ) {
+    var v = parseInt( $( e ).val() );
+    if ( !isNaN( v ) )
+        sum += v;
+      $('#totalWeight').val(sum);
+      
+} );
+
+
+}
+function calcDiaWeight(){
+  for(i=0; i < numberOfDiaRequired; i++){
+    //$('#totalDiaWeight'+i+'[]') = ($('#noOfRolls'+i+'[]').val()) * ($('#rollWeight'+i'[]').val());
+  }
+}
+
+function removeRow(rnum) {
+jQuery('#rowNum'+rnum).remove();
+numberOfDiaRequired--;
+$('#numberOfDiaRequired').val(numberOfDiaRequired);
+}
+
+
+                  // change the content of the select tag's popover dynamically based on the content of the selcted option
+                  $('#company').change(function(){
+                    var selectedOption = $(this).find(':selected').attr('data-content');//selected option's popover content
+                    $(this).attr('data-content',selectedOption);//setting it as selected options data-content                    
+                    
+                  });
+
+                  $('#lotId').change(function(){
+                    var selectedOption = $(this).find(':selected').attr('data-content');//selected option's popover content
+                    $(this).attr('data-content',selectedOption);//setting it as selected options data-content                    
+                    
+                  });
+
+                  //popover a note on hovering 
+                  $(document).ready(function(){
+                    $('[rel="popover"]').popover(
+                      {trigger:'hover',place:'right'});
+
+                  });
+
+
+         //on clicking add new count, open a modal window with the form to add the new count
+    function openModal(){
+      
+      $('#modal-new-count').modal({
+                show: true, 
+                backdrop: 'static',
+                keyboard: true
+      });
+
+    }
+
+    var customers = null;
+    var lot = null; 
+    var id;
+    fillDropDowns();
+          function fillDropDowns(){
+              db.customers_Collection.find({}, function (err, docs){
+                customers = docs;
+                  if(customers != null){
+                    $('#company').children('option').not("[value='']").remove();    
+                    for(i=0; i < customers.length; i++){//loop through the customers collection
+                      $('#company').append($('<option>',{//add options tag to the select tag
+                        value : customers[i]._id,// thus populating the list of customers
+                        id : customers[i].custName,// in the DropDown
+                        text : customers[i].custName,
+                        'data-content':customers[i].address+', '+customers[i].city+', '+customers[i].state+', '+' Mobile: '+customers[i].mobile,
+                        'data-title':customers[i].custName
+                        }));
+                      }
+                  }
+                
+                  else{// if the database has no list of customers, tell the users there are no customers
+                   
+                  }
+              });
+                // fill in the lot drop down
+                db.lot_Collection.find({}, function(err, docs){
+                lot = docs;
+                if(lot != null){
+                    $('#lotId').children('option').not("[value='']").remove();    
+                    for(i=0; i < lot.length; i++){//loop through the counts collection
+                      $('#lotId').append($('<option>',{//add options tag to the select tag
+                        value : lot[i]._id,// thus populating the list of counts
+                        id : lot[i]._id,// in the DropDown
+                        text : lot[i]._id,
+                        'data-content': 'Count: ' +lot[i].count+',Mill: '+lot[i].mill+',Quantity: '+lot[i].quantityKG+'Kgs, '+lot[i].quantityGrams +'gms, Price: '+lot[i].purchasePrice,
+                        'data-title':lot[i]._id
+                        
+                        }));
+                      }
+                  }
+                  
+              });
+      }
+
+
+$('#formId').submit(function(e) {
+    calculateTotalWeight();
+    var despatchNoteId;
+    var formData = JSON.stringify($('#formId').serializeObject());
+    saveKnittingProgramme(formData);
+    db.pkTracker_Collection.find({'_id':'despatchNote'},{'seq':1,'_id':0}, function(err, docs){
+      despatchNoteId=docs[0]['seq'];
+      alert(despatchNoteId);
+      window.location.replace("despatchKnitProgramme.html?despatchNoteId="+despatchNoteId);
+    });
+    /*if(saveKnittingProgramme(formData)){
+      e.preventDefault()
+            $('#modal-from-dom').modal({
+                show: true, 
+                backdrop: 'static',
+                keyboard: true
+      })
+    }
+   */ 
+});
+
+          
+
+</script>
+  </body>
+</html>
+  
