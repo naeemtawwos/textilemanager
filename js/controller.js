@@ -6,6 +6,11 @@ function saveCustomer(formData){
 	return true;
 }
 
+function saveKnittingProgramme(formData){
+    addNewKnit(formData);
+    return true;
+}
+
 
 function saveSupplier(formData){
     addRemSupplier(formData, add = true);

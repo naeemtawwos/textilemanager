@@ -29,6 +29,7 @@ db.suppliers_Collection = new Datastore({ filename: 'dbscript/nedb/suppliers_Col
 db.loginCreds_Collection = new Datastore({ filename: 'dbscript/nedb/loginCreds_Collection.db', autoload: true });
 db.lot_Collection = new Datastore({ filename: 'dbscript/nedb/lot_Collection.db', autoload: true });
 db.count_Collection = new Datastore({ filename: 'dbscript/nedb/count_Collection.db', autoload: true });//count as in the type of the yarn purchased
+db.knitting_Collection = new Datastore({ filename: 'dbscript/nedb/knitting_Collection.db', autoload: true });
 db.pkTracker_Collection = new Datastore({ filename: 'dbscript/nedb/pkTracker_Collection.db', autoload: true });//count as a tracker for the autoincrement feature
 
 
@@ -93,9 +94,33 @@ db.suppliers_Collection.insert(
 //collection to maintain 'auto_incrementing';
 	db.pkTracker_Collection.insert({_id:"customer_id",seq:0 });
 	db.pkTracker_Collection.insert({_id:"supplier_id",seq:0 });
+	db.pkTracker_Collection.insert({_id:'despatchNote', seq:0});
 	var thisyear = new Date().getFullYear()
 	//var id='00000';//gives the formate of yyyy<lotid> yyyy will be the current year and lotid will be fourdigit autoincrement
 	db.pkTracker_Collection.insert({_id:"lot_id",seq:'00000',seqNum:0});
+}
+
+
+
+
+function addNewKnit(knitProgramme){
+	var nexSeq;
+	knitProgramme=JSON.parse(knitProgramme);
+	
+	db.pkTracker_Collection.update({'_id':'despatchNote'},{$inc:{'seq':1}}); //increment the value of the counter by one
+	db.pkTracker_Collection.find({'_id':'despatchNote'},{'seq':1,'_id':0}, function(err, docs){
+			nexSeq=docs[0]['seq'];
+			assert.equal(null,err);
+			console.log(err);
+			knitProgramme._id=nexSeq;
+			db.knitting_Collection.insert(knitProgramme,function(err,result){
+					assert.equal(null,err);
+					console.log(err);
+			});
+	});
+
+
+	
 }
 
 

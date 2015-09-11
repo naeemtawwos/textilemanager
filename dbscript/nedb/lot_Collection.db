@@ -1,2 +1,4 @@
 {"count":"1","mill":"Mangalam Yarns","quantityKG":"1000","quantityGrams":"45","purchasePrice":"10000","purchaseDate":"2015-08-27","invoiceNum":"GR12345","invoiceDate":"2015-08-27","_id":1}
 {"count":"1","mill":"Mangalam Yarns","quantityKG":"sdfasd","quantityGrams":"asdfasdf","purchasePrice":"12312312","purchaseDate":"2015-08-27","invoiceNum":"156787","invoiceDate":"2015-08-27","_id":2}
+{"count":"5","mill":"3","quantityKG":"12312","quantityGrams":"123123123","purchasePrice":"12312312","purchaseDate":"2015-09-07","invoiceNum":"123123123","invoiceDate":"2015-09-07","_id":3}
+{"count":"1","mill":"2","quantityKG":"123","quantityGrams":"12313","purchasePrice":"123123","purchaseDate":"2015-09-11","invoiceNum":"123123","invoiceDate":"2015-09-08","_id":8}

@@ -83,13 +83,13 @@
            <select class="form-control" style="display:inline" id="company" data-content="Select the mill from which the lot was purchased" required name="mill" target placeholder="Company" rel="popover">
              <option value="" data-title="" data-content="Select the mill from which the lot was purchased">--MILL--</option>
           </select>
-          <a type="button" href="addClient.html" class="btn btn-link" style="padding-left:7px" rel="popover" data-content="If the mill you are looking for is not in the list or there are no mills in the list, click on the link to add the details of the mill." >Add new mill</a><br />
+          <a type="button" href="addSupplier.html" class="btn btn-link" style="padding-left:7px" rel="popover" data-content="If the mill you are looking for is not in the list or there are no mills in the list, click on the link to add the details of the mill." >Add new mill</a><br />
           
           <label for="quantity" class="sr-only">Quantity in KGs</label>
           <input type="text" id="quantityKG" name="quantityKG" class="form-control" placeholder="Quantity in KGs" required style="width:150px;display:inline">
           <label for="quantity" class="sr-only">Quantity in Grams</label>
           <input type="text" id="quantityGrams" name="quantityGrams" class="form-control" placeholder="Quantity in Grams" required style="width:150px;display:inline">
-          <label for="price" class="sr-only">Total Price Amount</label>
+          <label for="price" class="sr-only">Price Per KiloGram</label>
           <input type="text" id="price" name="purchasePrice" class="form-control" placeholder="Total Price Amount" required >
           <label for="purchaseDate" class="sr-only">Purchase Date</label>
           <input type="date" data-provide="datepicker" name="purchaseDate" id="purchaseDate" class="form-control" placeholder="Purchased Date" required>
@@ -229,6 +229,7 @@
       }
 
 $('#formId').submit(function(e) {
+  
     var formData = JSON.stringify($('#formId').serializeObject());
     if(saveLot(formData)){
       e.preventDefault()

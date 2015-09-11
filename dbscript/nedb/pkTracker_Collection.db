@@ -1,4 +1,5 @@
 {"_id":"count_id","seq":7}
 {"_id":"customer_id","seq":3}
-{"_id":"lot_id","seq":2,"date":2015,"lotId":"20150000"}
+{"_id":"despatchNote","seq":9}
+{"_id":"lot_id","seq":8,"date":2015,"lotId":"20150000"}
 {"_id":"supplier_id","seq":3}
