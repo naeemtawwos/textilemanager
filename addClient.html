@@ -7,7 +7,7 @@
     <meta name="description" content="In this page the details of a new lot is entered.">
     <meta name="author" content="Naeem">
     <link rel="icon" href="../../favicon.ico">
-    <script src="js/database-nedb.js"></script>  
+    <script src="js/database.js"></script>  
     <script src="js/jquery.js"></script>
     <script src="js/controller.js"></script>
     <script src="js/bootstrap.js"></script>
@@ -54,10 +54,12 @@
         <form class="form-center" id="formId" action="" method="post">
           <h2 class="form-signin-heading">Add a New Client</h2>
           <label for="custName" class="sr-only">Customer Name</label>
+          <input type="hidden" id="_id" name="_id" class="form-control" />
          
           <input type="text" id="custName" name="custName" class="form-control" placeholder="Customer Name" required autofocus>
           <label for="address" class="sr-only">Address</label>
           <textarea id="address" name="address" class="form-control" placeholder="Address..." ></textarea>
+
           <label for="city" class="sr-only">City</label>
           <input type="text" id="city" name="city" class="form-control" placeholder="City" required>
           <label for="state" class="sr-only">State</label>
@@ -85,41 +87,23 @@
           <button class="btn btn-lg btn-primary btn-block" data-toggle="modal" data-target=".bs-example-modal-sm" type="submit">Save Client</button>
         </form>
 
+        <!-- Small modal -->
 
-        <div id="modal-from-dom" class="modal fade" style="display:none;">
-          <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                  <h4 class="modal-title" id="mySmallModalLabel">Customer Added</h4>
-              </div>
-              <div class="modal-body">
-                    The details of the customer has been added successfully. You can add another customer or go back to Dashboard.
+        <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm">
+              <div class="modal-content">
+                ...
               </div>
             </div>
-          </div> 
-        </div>
-
-          
-
+        </div>          
 
 
   <script lang="javascript">
 
-$('#formId').submit(function(e) {
+$('#formId').submit(function() {
     var formData = JSON.stringify($('#formId').serializeObject());
-    if(saveCustomer(formData)){
-      e.preventDefault()
-            $('#modal-from-dom').modal({
-                show: true, 
-                backdrop: 'static',
-                keyboard: true
-      })
-    }
-    else{
-
-    }
+    if(saveCustomer(formData))
+    window.url="/clientAdded.html";
 });
 
 
